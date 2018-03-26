@@ -10,24 +10,27 @@
 #include "composition.h"
 #include "Sequence.h"
 
+#define NAAD_FOLDER		 1
+#define NAAD_FOLDER_COMP 2
+#define SLASH			"//"
 
-
-// CNaadhDlg dialog
-class CNaadhDlg : public CDialog
+// CNaadDlg dialog
+class CNaadDlg : public CDialog
 {
 // Construction
 public:
-	CNaadhDlg(CWnd* pParent = NULL);	// standard constructor
+	CNaadDlg(CWnd* pParent = NULL);	// standard constructor
+	~CNaadDlg(void);
 
 // Dialog Data
-	enum { IDD = IDD_NAADH_DIALOG };
+	enum { IDD = IDD_NAAD_DIALOG };
 
 //------------------------------------------------------------------------------------------------------------
 	CMenu			m_Menu, m_BolMenu, m_LoopMenu;
 	BOOL			m_Quiet, m_Saved, m_SamBeat, m_IsInstalled, m_IsShellOpen, m_IsCompView, m_IsPlaying, m_IsBolLoaded;
-	BOOL			m_VarietySameSpecies, m_VarietyAnySpecies, m_VarietyComp, m_VarietyLoop, m_PlayLoop, m_EditMode;
+	BOOL			m_VarietySameSpecies, m_VarietyAnySpecies, m_VarietyComp, m_VarietyLoop, m_PlayLoop, m_EditMode, m_AddBol;
 	BOOL			m_LoopDone;
-	CString			m_Mesg, m_AppPath, m_NaadhFileName, m_BolFileSeq[MC*MR], m_BolFolder;
+	CString			m_Mesg, m_AppPath, m_NaadFileName, m_BolFileSeq[MC*MR], m_BolFolder;
 	UINT			m_Version, /*m_Cols, m_Rows,*/ m_Tempo, m_NextBol, m_NextLoop, m_MaatraBol, m_BolVar;
 	//UINT			m_MaxBol, m_Echo;
 	UINT			m_ActiveLoop, m_Bpm, *m_LoopSequence, m_TotalLoops, m_SeqNum;
@@ -73,6 +76,8 @@ public:
 	void OpenLoopOldVer(CString loopfilename);
 	void Paste(UINT col, UINT row);
 	void NormalizeLocations();
+	CString GetUserDocumentPath(UINT type);
+	void ReportUsage();
 
 //------------------------------------------------------------------------------------------------------------
 
@@ -151,4 +156,6 @@ public:
 	afx_msg void OnEditCopy32956();
 	afx_msg void OnEditCut32957();
 	afx_msg void OnEditPaste32958();
+	afx_msg void OnEditAdd();
 };
+

@@ -46,7 +46,7 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
     "LANGUAGE 9, 1\r\n"
     "#pragma code_page(1252)\r\n"
-    "#include ""res\\Naadh.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""res\\Naad.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
     "#include ""afxres.rc""         // Standard components\r\n"
     "#endif\r\n"
     "\0"
@@ -84,7 +84,7 @@ BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,7,14,21,20
 END
 
-IDD_NAADH_DIALOG DIALOGEX 0, 0, 610, 316
+IDD_NAAD_DIALOG DIALOGEX 0, 0, 610, 316
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "Naad"
@@ -109,8 +109,8 @@ BEGIN
     CONTROL         "Tanpura",IDC_CHECK_ACC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,224,154,43,12
     GROUPBOX        "Composition",IDC_STATIC,7,139,190,34
     CONTROL         "Stereo",IDC_CHECK_STEREO,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,258,41,9
-    CONTROL         "Echo",IDC_CHECK_ECHO,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,268,41,9
-    CONTROL         "Test Test",IDC_CHECK_RNDBOL,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,276,45,12
+    CONTROL         "Duet",IDC_CHECK_ECHO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,519,239,41,9
+    CONTROL         "Test Test",IDC_CHECK_RNDBOL,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,269,45,12
     CONTROL         "",IDC_SLIDER_BOLVAR,"msctls_trackbar32",TBS_AUTOTICKS | TBS_BOTH | WS_TABSTOP,417,151,180,22
     GROUPBOX        "Bol Variety",IDC_STATIC,413,139,190,118
     CTEXT           "Medium",IDC_STATIC,493,176,32,8
@@ -130,7 +130,7 @@ BEGIN
     EDITTEXT        IDC_EDIT_TEMPOVAR,225,229,165,8,ES_CENTER | ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER
     EDITTEXT        IDC_EDIT_BOLVAR,426,189,165,8,ES_CENTER | ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER
     PUSHBUTTON      "Play Loop >",IDC_BUTTON_PLAYLOOP,269,264,71,16
-    PUSHBUTTON      "Restore the original",IDC_BUTTON_RESVAR,519,236,71,16,NOT WS_VISIBLE
+    PUSHBUTTON      "Restore the original",IDC_BUTTON_RESVAR,493,271,71,16,NOT WS_VISIBLE
 END
 
 IDD_DIALOG_ABT DIALOGEX 0, 0, 394, 192
@@ -191,8 +191,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,0
- PRODUCTVERSION 1,0,0,0
+ FILEVERSION 1,1,0,0
+ PRODUCTVERSION 1,1,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -209,12 +209,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Oormi Creations"
             VALUE "FileDescription", "Naad Tabla Composer"
-            VALUE "FileVersion", "1.0.0.0"
+            VALUE "FileVersion", "1.1.0.0"
             VALUE "InternalName", "Naad.exe"
             VALUE "LegalCopyright", "(c) Oormi Creations.  All rights reserved."
             VALUE "OriginalFilename", "Naad.exe"
             VALUE "ProductName", "Naad"
-            VALUE "ProductVersion", "1.0.0.0"
+            VALUE "ProductVersion", "1.1.0.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -240,7 +240,7 @@ BEGIN
         BOTTOMMARGIN, 55
     END
 
-    IDD_NAADH_DIALOG, DIALOG
+    IDD_NAAD_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 603
@@ -301,6 +301,7 @@ BEGIN
         MENUITEM "Cu&t",                        ID_EDIT_CUT32957
         MENUITEM "&Paste",                      ID_EDIT_PASTE32958
         MENUITEM "Clea&r",                      ID_EDIT_CLEAR32974
+        MENUITEM "&Add",                        ID_EDIT_ADD
     END
     POPUP "&View"
     BEGIN
@@ -348,6 +349,11 @@ BEGIN
         MENUITEM "&Settings",                   ID_OPTIONS_SETTINGS
         MENUITEM "&Bol Folder",                 ID_OPTIONS_BOLFOLDER
         MENUITEM "&Play All Samples",           ID_OPTIONS_PLAYALLSAMPLES
+    END
+    POPUP "&Share"
+    BEGIN
+        MENUITEM "&Upload Your Composition",    ID_SHARE_UPLOADYOURCOMPOSITION
+        MENUITEM "&Download Free Compositions", ID_SHARE_DOWNLOADFREECOMPOSITIONS
     END
     POPUP "&Help"
     BEGIN
@@ -603,6 +609,11 @@ BEGIN
 END
 
 IDD_DIALOG_ABT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_NAAD_DIALOG AFX_DIALOG_LAYOUT
 BEGIN
     0
 END

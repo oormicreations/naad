@@ -6,7 +6,7 @@
     name="Microsoft.Windows.Naad"
     type="win32" 
 /> 
-<description>Your app description here</description> 
+<description>Naad Tabla Composer FOSS</description> 
 <dependency> 
     <dependentAssembly> 
         <assemblyIdentity 

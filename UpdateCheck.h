@@ -19,6 +19,7 @@ public:
 	virtual void Check(UINT uiURL);
 	virtual void Check(const CString& strURL);
 	CUpdateCheck();
+	void SendUsageData();
 	virtual ~CUpdateCheck();
 
 	static HINSTANCE GotoURL(LPCTSTR url, int showcmd);

@@ -2,38 +2,39 @@
 //
 
 #include "stdafx.h"
-#include "Naadh.h"
-#include "NaadhDlg.h"
+#include "Naad.h"
+#include "NaadDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+//#include <vld.h> 
 
-// CNaadhApp
+// CNaadApp
 
-BEGIN_MESSAGE_MAP(CNaadhApp, CWinApp)
+BEGIN_MESSAGE_MAP(CNaadApp, CWinApp)
 	ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
-// CNaadhApp construction
+// CNaadApp construction
 
-CNaadhApp::CNaadhApp()
+CNaadApp::CNaadApp()
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }
 
 
-// The one and only CNaadhApp object
+// The one and only CNaadApp object
 
-CNaadhApp theApp;
+CNaadApp theApp;
 
 
-// CNaadhApp initialization
+// CNaadApp initialization
 
-BOOL CNaadhApp::InitInstance()
+BOOL CNaadApp::InitInstance()
 {
 	// InitCommonControls() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
@@ -53,7 +54,7 @@ BOOL CNaadhApp::InitInstance()
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
-	CNaadhDlg dlg;
+	CNaadDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

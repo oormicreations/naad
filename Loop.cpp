@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "Naadh.h"
+#include "Naad.h"
 #include ".\loop.h"
 
 CLoop::CLoop(void)

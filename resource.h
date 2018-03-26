@@ -7,6 +7,7 @@
 #define IDS_ABOUTBOX                    101
 #define IDD_NAADH_DIALOG                102
 #define IDS_UPDATE_AVAILABLE            102
+#define IDD_NAAD_DIALOG                 102
 #define IDS_UPDATE_NO                   103
 #define IDS_UPDATE_NOCHECK              104
 #define IDS_UPDATE                      105
@@ -257,13 +258,17 @@
 #define ID__GADHIGENA                   32972
 #define ID__TIRAKETADHA                 32973
 #define ID_EDIT_CLEAR32974              32974
+#define ID_EDIT_ADD                     32975
+#define ID_BUTTON2                      32976
+#define ID_SHARE_UPLOADYOURCOMPOSITION  32977
+#define ID_SHARE_DOWNLOADFREECOMPOSITIONS 32978
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        140
-#define _APS_NEXT_COMMAND_VALUE         32975
+#define _APS_NEXT_RESOURCE_VALUE        141
+#define _APS_NEXT_COMMAND_VALUE         32979
 #define _APS_NEXT_CONTROL_VALUE         1026
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

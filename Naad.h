@@ -9,7 +9,7 @@
 
 #include "resource.h"		// main symbols
 
-#define VERSION		10
+#define VERSION		11
 #define VERMONTH	"March 2018"
 
 #define MAXRESRV	16
@@ -25,14 +25,14 @@
 
 //#define BOLFILE		{"Dha0^.wav", "Dhin0^.wav", "Dhit0^.wav", "Dhun0^.wav", "Ga0^.wav", "Ge0^.wav", "Ke0^.wav", "Na0^.wav", "Tat0^.wav", "Ti0^.wav", "Tin0^.wav", "Tun0^.wav"}
 
-// CNaadhApp:
+// CNaadApp:
 // See Naadh.cpp for the implementation of this class
 //
 
-class CNaadhApp : public CWinApp
+class CNaadApp : public CWinApp
 {
 public:
-	CNaadhApp();
+	CNaadApp();
 
 // Overrides
 	public:
@@ -43,5 +43,5 @@ public:
 	DECLARE_MESSAGE_MAP()
 };
 
-extern CNaadhApp theApp;
+extern CNaadApp theApp;
 

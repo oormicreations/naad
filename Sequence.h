@@ -7,7 +7,7 @@ public:
 	CSequence(void);
 	~CSequence(void);
 
-	UINT *m_BolIdSeq, *m_BolStatusSeq, *m_BolVarSeq;
+	UINT *m_BolIdSeq, *m_BolStatusSeq, *m_BolVarSeq, *m_BolId2Seq;
 	UINT m_BolSeqCount, m_RepeatSeqCount, m_RepeatCountDown;
 
 	bool CreateBolSequence(CLoop loop);

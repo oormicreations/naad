@@ -41,9 +41,10 @@ public:
 	CBol(void);
 	~CBol(void);
 //------------------------------------------------------------------------------------------------------------------------------------
-	CString m_BolName;
+	CString m_BolName, m_BolName2;
 	CString m_BolStatusName;
 	UINT	m_BolId;
+	UINT	m_BolId2;
 	UINT	m_Status;
 	UINT	m_Species;
 	UINT	m_Row, m_Col;
@@ -51,6 +52,7 @@ public:
 //------------------------------------------------------------------------------------------------------------------------------------
 
 	BOOL SetBolType(UINT id, UINT col, UINT row);
+	BOOL SetBolAdditional(UINT id, UINT col, UINT row);
 	BOOL SetBolType(UINT id);
 	BOOL SetBolStatus(UINT status);
 	void Clone(CBol srcbol);

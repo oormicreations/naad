@@ -2,8 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "Naadh.h"
-#include "NaadhDlg.h"
+#include "Naad.h"
+#include "NaadDlg.h"
 #include "mmsystem.h"
 #include "AboutNaadDlg.h"
 
@@ -43,17 +43,25 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
 
-// CNaadhDlg dialog
+// CNaadDlg dialog
 
 
 
-CNaadhDlg::CNaadhDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CNaadhDlg::IDD, pParent)
+CNaadDlg::CNaadDlg(CWnd* pParent /*=NULL*/)
+	: CDialog(CNaadDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_LoopSequence = NULL;
+	m_Sequence = NULL;
 }
 
-void CNaadhDlg::DoDataExchange(CDataExchange* pDX)
+CNaadDlg::~CNaadDlg(void)
+{
+	if(m_LoopSequence != NULL)	m_LoopSequence = NULL;
+	if(m_Sequence != NULL)	m_Sequence = NULL;
+}
+
+void CNaadDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST, m_List);
@@ -62,7 +70,7 @@ void CNaadhDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SLIDER_BOLVAR, m_BolVarSliderCtrl);
 }
 
-BEGIN_MESSAGE_MAP(CNaadhDlg, CDialog)
+BEGIN_MESSAGE_MAP(CNaadDlg, CDialog)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
@@ -98,42 +106,40 @@ BEGIN_MESSAGE_MAP(CNaadhDlg, CDialog)
 	ON_COMMAND(ID_BOLS_VIEWCOMP, OnBolsViewcomp)
 	ON_COMMAND(ID_LOOP_PROPERTIES, OnLoopProperties)
 	ON_COMMAND(ID_VIEW_LOOP, OnViewLoop)
-	ON_BN_CLICKED(IDC_CHECK_ECHO, &CNaadhDlg::OnBnClickedCheckEcho)
-	ON_BN_CLICKED(IDOK, &CNaadhDlg::OnBnClickedOk)
-	ON_COMMAND(ID_GHUNGRU_GHUNGRU01, &CNaadhDlg::OnGhungruGhungru01)
-	ON_COMMAND(ID_GHUNGRU_GHUNGRU02, &CNaadhDlg::OnGhungruGhungru02)
-	ON_COMMAND(ID_GHUNGRU_GHUNGRU03, &CNaadhDlg::OnGhungruGhungru03)
-	ON_COMMAND(ID_GHUNGRU_GHUNGRU04, &CNaadhDlg::OnGhungruGhungru04)
-	ON_COMMAND(ID_GHUNGRU_GHUNGRU05, &CNaadhDlg::OnGhungruGhungru05)
-	ON_COMMAND(ID_GHUNGRU_GHUNGRU06, &CNaadhDlg::OnGhungruGhungru06)
-	ON_COMMAND(ID_ACCOMPANIMENT_TANPURA, &CNaadhDlg::OnAccompanimentTanpura)
-	ON_COMMAND(ID_ACCOMPANIMENT_2, &CNaadhDlg::OnAccompaniment2)
-	ON_COMMAND(ID_ACCOMPANIMENT_3, &CNaadhDlg::OnAccompaniment3)
-	ON_COMMAND(ID_ACCOMPANIMENT_4, &CNaadhDlg::OnAccompaniment4)
-	ON_BN_CLICKED(IDC_CHECK_VARSAME, &CNaadhDlg::OnBnClickedCheckVarsame)
-	ON_BN_CLICKED(IDC_CHECK_VARANY, &CNaadhDlg::OnBnClickedCheckVarany)
-	ON_BN_CLICKED(IDC_BUTTON_SAVEVAR, &CNaadhDlg::OnBnClickedButtonSavevar)
-	ON_BN_CLICKED(IDC_CHECK_VARCOMP, &CNaadhDlg::OnBnClickedCheckVarcomp)
-	ON_BN_CLICKED(IDC_CHECK_VARLOOP, &CNaadhDlg::OnBnClickedCheckVarloop)
-	ON_BN_CLICKED(IDC_BUTTON_AUTOCOMPOSE, &CNaadhDlg::OnBnClickedButtonAutocompose)
-	ON_BN_CLICKED(IDC_BUTTON_PLAYLOOP, &CNaadhDlg::OnBnClickedButtonPlayloop)
-	ON_BN_CLICKED(IDC_BUTTON_GUN1, &CNaadhDlg::OnBnClickedButtonGun1)
-	//ON_BN_CLICKED(IDC_BUTTON_GUN2, &CNaadhDlg::OnBnClickedButtonGun2)
-	//ON_BN_CLICKED(IDC_BUTTON_GUN3, &CNaadhDlg::OnBnClickedButtonGun3)
-	//ON_BN_CLICKED(IDC_BUTTON_GUN4, &CNaadhDlg::OnBnClickedButtonGun4)
-	ON_COMMAND(ID_LOOP_LOADLOOP, &CNaadhDlg::OnLoopLoadloop)
-	ON_COMMAND(ID_LOOP_SAVELOOP, &CNaadhDlg::OnLoopSaveloop)
-	ON_COMMAND(ID_EDIT_SELECT, &CNaadhDlg::OnEditSelect)
-	ON_COMMAND(ID_EDIT_CLEAR32974, &CNaadhDlg::OnEditClear32974)
-	ON_COMMAND(ID_EDIT_COPY32956, &CNaadhDlg::OnEditCopy32956)
-	ON_COMMAND(ID_EDIT_CUT32957, &CNaadhDlg::OnEditCut32957)
-	ON_COMMAND(ID_EDIT_PASTE32958, &CNaadhDlg::OnEditPaste32958)
+	ON_BN_CLICKED(IDC_CHECK_ECHO, &CNaadDlg::OnBnClickedCheckEcho)
+	ON_BN_CLICKED(IDOK, &CNaadDlg::OnBnClickedOk)
+	ON_COMMAND(ID_GHUNGRU_GHUNGRU01, &CNaadDlg::OnGhungruGhungru01)
+	ON_COMMAND(ID_GHUNGRU_GHUNGRU02, &CNaadDlg::OnGhungruGhungru02)
+	ON_COMMAND(ID_GHUNGRU_GHUNGRU03, &CNaadDlg::OnGhungruGhungru03)
+	ON_COMMAND(ID_GHUNGRU_GHUNGRU04, &CNaadDlg::OnGhungruGhungru04)
+	ON_COMMAND(ID_GHUNGRU_GHUNGRU05, &CNaadDlg::OnGhungruGhungru05)
+	ON_COMMAND(ID_GHUNGRU_GHUNGRU06, &CNaadDlg::OnGhungruGhungru06)
+	ON_COMMAND(ID_ACCOMPANIMENT_TANPURA, &CNaadDlg::OnAccompanimentTanpura)
+	ON_COMMAND(ID_ACCOMPANIMENT_2, &CNaadDlg::OnAccompaniment2)
+	ON_COMMAND(ID_ACCOMPANIMENT_3, &CNaadDlg::OnAccompaniment3)
+	ON_COMMAND(ID_ACCOMPANIMENT_4, &CNaadDlg::OnAccompaniment4)
+	ON_BN_CLICKED(IDC_CHECK_VARSAME, &CNaadDlg::OnBnClickedCheckVarsame)
+	ON_BN_CLICKED(IDC_CHECK_VARANY, &CNaadDlg::OnBnClickedCheckVarany)
+	ON_BN_CLICKED(IDC_BUTTON_SAVEVAR, &CNaadDlg::OnBnClickedButtonSavevar)
+	ON_BN_CLICKED(IDC_CHECK_VARCOMP, &CNaadDlg::OnBnClickedCheckVarcomp)
+	ON_BN_CLICKED(IDC_CHECK_VARLOOP, &CNaadDlg::OnBnClickedCheckVarloop)
+	ON_BN_CLICKED(IDC_BUTTON_AUTOCOMPOSE, &CNaadDlg::OnBnClickedButtonAutocompose)
+	ON_BN_CLICKED(IDC_BUTTON_PLAYLOOP, &CNaadDlg::OnBnClickedButtonPlayloop)
+	ON_BN_CLICKED(IDC_BUTTON_GUN1, &CNaadDlg::OnBnClickedButtonGun1)
+	ON_COMMAND(ID_LOOP_LOADLOOP, &CNaadDlg::OnLoopLoadloop)
+	ON_COMMAND(ID_LOOP_SAVELOOP, &CNaadDlg::OnLoopSaveloop)
+	ON_COMMAND(ID_EDIT_SELECT, &CNaadDlg::OnEditSelect)
+	ON_COMMAND(ID_EDIT_CLEAR32974, &CNaadDlg::OnEditClear32974)
+	ON_COMMAND(ID_EDIT_COPY32956, &CNaadDlg::OnEditCopy32956)
+	ON_COMMAND(ID_EDIT_CUT32957, &CNaadDlg::OnEditCut32957)
+	ON_COMMAND(ID_EDIT_PASTE32958, &CNaadDlg::OnEditPaste32958)
+	ON_COMMAND(ID_EDIT_ADD, &CNaadDlg::OnEditAdd)
 END_MESSAGE_MAP()
 
 
-// CNaadhDlg message handlers
+// CNaadDlg message handlers
 
-BOOL CNaadhDlg::OnInitDialog()
+BOOL CNaadDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -190,10 +196,12 @@ BOOL CNaadhDlg::OnInitDialog()
 	LoadSettings();
 	if(!m_IsInstalled) 
 	{
-		AssociateFileType(".nad", t , "NaadFile", "Naad File", t+",1");
-		AssociateFileType(".nlp", t , "NaadLoopFile", "Naad Loop File", t+",2");
+		//Installer does the file assoc now
+		//AssociateFileType(".nad", t , "NaadFile", "Naad File", t+",1");
+		//AssociateFileType(".nlp", t , "NaadLoopFile", "Naad Loop File", t+",2");
 		m_IsInstalled = true;
 		SaveSettings();
+		ReportUsage();
 	}
 
 #ifndef _DEBUG
@@ -221,14 +229,15 @@ BOOL CNaadhDlg::OnInitDialog()
 	m_Menu.CheckMenuItem(ID_INSTRUMENT_TABLA,		MF_CHECKED|MF_BYCOMMAND);
 	m_Menu.CheckMenuItem(ID_ACCOMPANIMENT_TANPURA,	MF_CHECKED|MF_BYCOMMAND);
 	m_Menu.CheckMenuItem(ID_GHUNGRU_GHUNGRU01,		MF_CHECKED|MF_BYCOMMAND);
+	m_Menu.EnableMenuItem(ID_EDIT_ADD, MF_BYCOMMAND | MF_DISABLED|MF_GRAYED);
 
 	Reset();
 
 	//get the command line
 	CCommandLineInfo cinfo;
 	theApp.ParseCommandLine(cinfo);
-	m_NaadhFileName = cinfo.m_strFileName;
-	if(!m_NaadhFileName.IsEmpty())
+	m_NaadFileName = cinfo.m_strFileName;
+	if(!m_NaadFileName.IsEmpty())
 	{
 		m_IsShellOpen = TRUE;
 		OnFileOpen32773();
@@ -243,7 +252,7 @@ BOOL CNaadhDlg::OnInitDialog()
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
-void CNaadhDlg::OnSysCommand(UINT nID, LPARAM lParam)
+void CNaadDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
 	{
@@ -264,7 +273,7 @@ void CNaadhDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CNaadhDlg::OnPaint() 
+void CNaadDlg::OnPaint() 
 {
 	if (IsIconic())
 	{
@@ -291,12 +300,12 @@ void CNaadhDlg::OnPaint()
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CNaadhDlg::OnQueryDragIcon()
+HCURSOR CNaadDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CNaadhDlg::Reset()
+void CNaadDlg::Reset()
 {
 	for(int x=0;x<MC;x++)
 	{
@@ -328,6 +337,7 @@ void CNaadhDlg::Reset()
 	m_IsPlaying		= FALSE;
 	m_PlayLoop		= FALSE;
 	m_EditMode		= FALSE;
+	m_AddBol		= FALSE;
 	//m_Paste			= FALSE;
 
 	m_VarietySameSpecies	= TRUE;
@@ -347,13 +357,14 @@ void CNaadhDlg::Reset()
 
 	m_List.SetColHeading(7,"Compose Mode");
 	m_Menu.CheckMenuItem(ID_EDIT_SELECT, (MF_CHECKED * (UINT)m_EditMode) |MF_BYCOMMAND);
+	m_Menu.EnableMenuItem(ID_EDIT_ADD, MF_BYCOMMAND | MF_DISABLED|MF_GRAYED);
 
 	m_Mesg.Format("%.1f", (float)VERSION/10.0);
 	m_Mesg = "  Naad - Version " + m_Mesg + ", " + VERMONTH;
 	this->SetDlgItemText(IDC_STATIC_MSG, m_Mesg);
 }
 
-void CNaadhDlg::OnFileExit()
+void CNaadDlg::OnFileExit()
 {	
 	OnBnClickedButtonStop();
 	DeleteLoopSequence();
@@ -361,7 +372,7 @@ void CNaadhDlg::OnFileExit()
 	CDialog::OnOK();
 }
 
-void CNaadhDlg::OnHelpAboutnaadh()
+void CNaadDlg::OnHelpAboutnaadh()
 {
 	m_WaveBox.Play(126);
 
@@ -382,17 +393,17 @@ UINT UpdateCheckProc(LPVOID param)
 	return 0;
 }
 
-void CNaadhDlg::OnHelpCheckforupdates()
+void CNaadDlg::OnHelpCheckforupdates()
 {
 	CUpdateCheck *checkUpdate1 = new CUpdateCheck;
 	checkUpdate1->m_Quiet = m_Quiet;
 	CWinThread* hTh1 = AfxBeginThread( UpdateCheckProc, checkUpdate1, THREAD_PRIORITY_NORMAL );
 }
 
-void CNaadhDlg::OpenOldVer()
+void CNaadDlg::OpenOldVer()
 {
 	//new comp
-	CString filetitle = m_NaadhFileName;
+	CString filetitle = m_NaadFileName;
 	m_Saved = TRUE;
 	OnFileNewcomposition();
 	m_Composition.DeleteLoop(0);
@@ -400,64 +411,15 @@ void CNaadhDlg::OpenOldVer()
 	m_List.m_selcol = 0;
 	m_List.m_selrow = 0;
 	OpenLoopOldVer(filetitle);
-
-	//CFile naadhfile;
-	//BOOL res1 = naadhfile.Open(m_NaadhFileName, CFile::modeRead);
-	//if(!res1)
-	//{
-	//	AfxMessageBox("Error : Failed to open the file");
-	//	m_NaadhFileName = "";
-	//	return;
-	//}
-	//CArchive arch(&naadhfile, CArchive::load);
-
-	//UINT ver = 0;
-	////ver
-	//arch >> ver;
-	//if(ver < 2)
-	//{
-	//	arch.Close();
-	//	naadhfile.Close();
-	//	AfxMessageBox("The file you are trying to open is of a version that is no longer supported");
-	//	return;
-	//}
-	//UINT futureuint	= 0, col, row;
-	//CString futurestr;
-	//BOOL futurebool	= false;
-	////ClearDisplay();
-
-	//arch >> col >> row >> m_MaatraBol;
-	//if(m_MaatraBol<1) m_MaatraBol = 1;
-
-	//for(int x=0;x<MAXRESRV-1;x++) arch >> futureuint;
-	//for(int x=0;x<MAXRESRV;x++) arch >> futurestr;
-	//for(int x=0;x<MAXRESRV;x++) arch >> futurebool;
-
-	////for(int x=0;x<MR;x++)
-	////{
-	////	for(int y=0;y<MC;y++)
-	////	{
-	////		//arch >> m_Taal[x][y];
-	////		//arch >> m_Status[x][y];
-	////	}
-	////}
-
-	//arch.Close();
-	//naadhfile.Close();
-
-	////DisplayTaal();
-
-	//CString filetitle = m_NaadhFileName;
-	//filetitle.Delete(0,m_NaadhFileName.ReverseFind('\\')+1);
-
-	//m_Mesg = "  Loaded ...  " + filetitle; //DataFileOpenDialog.GetFileTitle();
-	//this->SetDlgItemText(IDC_STATIC_FILE, m_Mesg);
-	//this->SetDlgItemText(IDC_STATIC_MSG, "  Ready...");
-	//m_Saved = true;
 }
 
-void CNaadhDlg::OnFileOpen32773()
+void CNaadDlg::OnFileOpen32773()
 {
+	if (m_AddBol)
+	{
+		OnEditAdd();
+	}
+
 	if(!m_IsShellOpen)
 	{
 		if(m_IsPlaying) OnBnClickedButtonStop();
@@ -471,23 +433,23 @@ void CNaadhDlg::OnFileOpen32773()
 		//opens output file select dialog
 		CFileDialog DataFileOpenDialog(true,"nad","",OFN_HIDEREADONLY,"Naad Files (*.nad)|*.nad|All Files (*.*)|*.*||");
 		DataFileOpenDialog.m_ofn.lpstrTitle = "Load a Naad File ...";
-		DataFileOpenDialog.m_ofn.lpstrInitialDir = m_AppPath + "Compositions";
+		DataFileOpenDialog.m_ofn.lpstrInitialDir = GetUserDocumentPath(NAAD_FOLDER_COMP);
 		INT_PTR res = DataFileOpenDialog.DoModal();
 		if(res==IDCANCEL) return;
-		m_NaadhFileName = DataFileOpenDialog.GetPathName();
-		if(m_NaadhFileName.IsEmpty()) return;
+		m_NaadFileName = DataFileOpenDialog.GetPathName();
+		if(m_NaadFileName.IsEmpty()) return;
 		if(DataFileOpenDialog.GetFileExt() != "nad") return;
 	}
 
-	CFile naadhfile;
-	BOOL res1 = naadhfile.Open(m_NaadhFileName, CFile::modeRead);
+	CFile naadfile;
+	BOOL res1 = naadfile.Open(m_NaadFileName, CFile::modeRead);
 	if(!res1)
 	{
 		AfxMessageBox("Error : Failed to open the file");
-		m_NaadhFileName = "";
+		m_NaadFileName = "";
 		return;
 	}
-	CArchive arch(&naadhfile, CArchive::load);
+	CArchive arch(&naadfile, CArchive::load);
 
 	UINT ver = 0, type = 0;
 	//ver
@@ -495,7 +457,7 @@ void CNaadhDlg::OnFileOpen32773()
 	if(ver < VERSION)
 	{
 		arch.Close();
-		naadhfile.Close();
+		naadfile.Close();
 		OpenOldVer();
 		return;
 	}
@@ -503,7 +465,7 @@ void CNaadhDlg::OnFileOpen32773()
 	if(ver > VERSION)
 	{
 		arch.Close();
-		naadhfile.Close();
+		naadfile.Close();
 		AfxMessageBox("The file you are trying to open is of a newer version. Please update to the latest version and try again.");
 		return;
 	}
@@ -512,14 +474,14 @@ void CNaadhDlg::OnFileOpen32773()
 	if(type != FILETYPE_COMP)
 	{
 		arch.Close();
-		naadhfile.Close();
+		naadfile.Close();
 		AfxMessageBox("The file you are trying to open is probably not a Naad composition and cannot be opened");
 		return;
 	}
 
 
 	//new comp
-	CString filetitle = m_NaadhFileName;
+	CString filetitle = m_NaadFileName;
 	m_Saved = TRUE;
 	OnFileNewcomposition();
 	m_Composition.DeleteLoop(0);
@@ -536,7 +498,7 @@ void CNaadhDlg::OnFileOpen32773()
 	if(loopcount > MC*MR)
 	{
 		arch.Close();
-		naadhfile.Close();
+		naadfile.Close();
 		AfxMessageBox("The file you are trying to open is probably corrupt and cannot be opened");
 		OnFileNewcomposition();
 		return;
@@ -566,7 +528,9 @@ void CNaadhDlg::OnFileOpen32773()
 			m_Composition.m_Loop[x].AddBol();
 			arch 
 				>> m_Composition.m_Loop[x].m_Bol[y].m_BolId
+				>> m_Composition.m_Loop[x].m_Bol[y].m_BolId2
 				>> m_Composition.m_Loop[x].m_Bol[y].m_BolName
+				>> m_Composition.m_Loop[x].m_Bol[y].m_BolName2
 				>> m_Composition.m_Loop[x].m_Bol[y].m_BolStatusName
 				>> m_Composition.m_Loop[x].m_Bol[y].m_Col
 				>> m_Composition.m_Loop[x].m_Bol[y].m_Row
@@ -578,11 +542,11 @@ void CNaadhDlg::OnFileOpen32773()
 
 
 	arch.Close();
-	naadhfile.Close();
+	naadfile.Close();
 
 	DisplayComposition();
 
-	filetitle.Delete(0,m_NaadhFileName.ReverseFind('\\')+1);
+	filetitle.Delete(0,m_NaadFileName.ReverseFind('\\')+1);
 
 	m_Mesg = "  Loaded ...  " + filetitle; //DataFileOpenDialog.GetFileTitle();
 	this->SetDlgItemText(IDC_STATIC_FILE, m_Mesg);
@@ -590,19 +554,19 @@ void CNaadhDlg::OnFileOpen32773()
 	m_Saved = true;
 }
 
-void CNaadhDlg::OnFileSave32774()
+void CNaadDlg::OnFileSave32774()
 {
-	if(m_NaadhFileName.IsEmpty()) {OnFileSaveas(); return;}
+	if(m_NaadFileName.IsEmpty()) {OnFileSaveas(); return;}
 
-	CFile naadhfile;
-	BOOL res = naadhfile.Open(m_NaadhFileName, CFile::modeCreate|CFile::modeWrite);
+	CFile naadfile;
+	BOOL res = naadfile.Open(m_NaadFileName, CFile::modeCreate|CFile::modeWrite);
 	if(!res)
 	{
 		AfxMessageBox("Error : Failed to create the file");
-		m_NaadhFileName = "";
+		m_NaadFileName = "";
 		return;
 	}
-	CArchive arch(&naadhfile, CArchive::store);
+	CArchive arch(&naadfile, CArchive::store);
 
 	//ver
 	arch << VERSION << FILETYPE_COMP;
@@ -632,7 +596,9 @@ void CNaadhDlg::OnFileSave32774()
 		{
 			arch 
 				<< m_Composition.m_Loop[x].m_Bol[y].m_BolId
+				<< m_Composition.m_Loop[x].m_Bol[y].m_BolId2
 				<< m_Composition.m_Loop[x].m_Bol[y].m_BolName
+				<< m_Composition.m_Loop[x].m_Bol[y].m_BolName2
 				<< m_Composition.m_Loop[x].m_Bol[y].m_BolStatusName
 				<< m_Composition.m_Loop[x].m_Bol[y].m_Col
 				<< m_Composition.m_Loop[x].m_Bol[y].m_Row
@@ -643,9 +609,9 @@ void CNaadhDlg::OnFileSave32774()
 	}
 
 	arch.Close();
-	naadhfile.Close();
+	naadfile.Close();
 
-	m_Mesg = "  Saved ...  " + m_NaadhFileName;
+	m_Mesg = "  Saved ...  " + m_NaadFileName;
 	this->SetDlgItemText(IDC_STATIC_MSG, m_Mesg);
 	m_Mesg.Delete(0,1+m_Mesg.ReverseFind('\\'));
 	this->SetDlgItemText(IDC_STATIC_FILE, m_Mesg);
@@ -653,54 +619,26 @@ void CNaadhDlg::OnFileSave32774()
 	m_Saved = true;
 }
 
-void CNaadhDlg::OnFileSaveas()
+void CNaadDlg::OnFileSaveas()
 {
-	CFileDialog ResFileOpenDialog(false,"nad",m_NaadhFileName,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,"Naad Files (*.nad)|*.nad|All Files (*.*)|*.*||");
-	ResFileOpenDialog.m_ofn.lpstrInitialDir = m_AppPath + "Compositions";
+	CString docpath = GetUserDocumentPath(NAAD_FOLDER_COMP);
+
+	CFileDialog ResFileOpenDialog(false,"nad",m_NaadFileName,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,"Naad Files (*.nad)|*.nad|All Files (*.*)|*.*||");
+	ResFileOpenDialog.m_ofn.lpstrInitialDir = docpath;
 	INT_PTR res = ResFileOpenDialog.DoModal();
 	if(res==IDOK) 
 	{
-		m_NaadhFileName = ResFileOpenDialog.GetPathName();
+		m_NaadFileName = ResFileOpenDialog.GetPathName();
 		OnFileSave32774();
 	}
 }
 
-//void CNaadhDlg::DisplayTaal()
-//{
-//	//CString bols[MAXBOLS] = BOLS;
-//
-//	for(int x=0;x<MR;x++)
-//	{
-//		for(int y=0;y<MC;y++)
-//		{
-//			if(m_Taal[x][y] != BOL_NONE) 
-//			{
-//				//if(m_Taal[x][y] != BOL_SILENCE) m_List.SetCellText(y, x, bols[m_Taal[x][y]/MAXBOLVARS], 1);
-//				//else m_List.SetCellText(y, x, "~ o ~", 1);
-//				m_List.m_selrow = x;
-//				m_List.m_selcol = y;
-//				DisplayBol();
-//				//m_List.SetCellMark(y, x, true);
-//			}
-//		}
-//	}
-//	
-//	m_ComboMatra.SetCurSel(m_MaatraBol-1);
-//	OnCbnSelchangeComboMatra();
-//}
-
-BOOL CNaadhDlg::OnCommand(WPARAM wParam, LPARAM lParam)
+BOOL CNaadDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 {
    if ((HIWORD(wParam) == LBN_SELCHANGE) && (LOWORD(wParam) == IDC_LIST))
    {
 		if(m_IsPlaying) OnBnClickedButtonStop();
-/*		if(m_Paste)
-		{
-			m_List.GetCellSelection();
-			m_List.SetCellMark(m_List.m_selcol, m_List.m_selrow, m_List.m_sel);
-			Paste(m_List.m_selcol, m_List.m_selrow);
-		}
-		else */
+
 		if(m_EditMode)
 		{
 			//which cell selected/deselected
@@ -733,7 +671,7 @@ BOOL CNaadhDlg::OnCommand(WPARAM wParam, LPARAM lParam)
    return CDialog::OnCommand(wParam, lParam);
 }
 
-void CNaadhDlg::ClearDisplay()
+void CNaadDlg::ClearDisplay()
 {
 	for(int x=0;x<MC;x++)
 	{
@@ -746,7 +684,7 @@ void CNaadhDlg::ClearDisplay()
 
 }
 
-void CNaadhDlg::ClearSelection()
+void CNaadDlg::ClearSelection()
 {
 	for(int x=0;x<MC;x++)
 	{
@@ -760,7 +698,7 @@ void CNaadhDlg::ClearSelection()
 	m_Composition.DeSelectAll();
 }
 
-void CNaadhDlg::OnFileNewtaal()//add loop
+void CNaadDlg::OnFileNewtaal()//add loop
 {
 	if(m_ActiveLoop != LOOP_NONE) 
 	{
@@ -791,7 +729,7 @@ void CNaadhDlg::OnFileNewtaal()//add loop
 	m_List.SetCellMark(x,y,true);
 }
 
-bool CNaadhDlg::CreateLoopSequence()
+bool CNaadDlg::CreateLoopSequence()
 {
 	if(m_Sequence || m_LoopSequence) DeleteLoopSequence();
 	
@@ -827,7 +765,7 @@ bool CNaadhDlg::CreateLoopSequence()
 				for(UINT bz=0;bz<m_Composition.m_Loop[nloop].m_RepeatCount;bz++)
 				{
 					m_LoopSequence[nseq] = nloop;
-					TRACE("loopseq [%d] = %d\r\n", nseq, nloop);
+//					TRACE("loopseq [%d] = %d\r\n", nseq, nloop);
 					nseq++;
 				}
 			}
@@ -852,7 +790,7 @@ bool CNaadhDlg::CreateLoopSequence()
 	return (allocloop && allocbol && allocseq);
 }
 
-void CNaadhDlg::DeleteLoopSequence()
+void CNaadDlg::DeleteLoopSequence()
 {
 	if(m_Sequence) 
 	{
@@ -866,14 +804,14 @@ void CNaadhDlg::DeleteLoopSequence()
 	}
 }
 
-void CNaadhDlg::OnBnClickedButtonPlay()
+void CNaadDlg::OnBnClickedButtonPlay()
 {
 	m_PlayLoop = FALSE;
 	m_NextLoop	= 0;
 	InitPlay();
 }
 
-void CNaadhDlg::TempoVariation()
+void CNaadDlg::TempoVariation()
 {
 	//variation in tempo and tempo randomness
 	if(m_Rand==0) 
@@ -886,7 +824,7 @@ void CNaadhDlg::TempoVariation()
 	UpdateTempo();
 }
 
-//bool CNaadhDlg::GetNextLoop()
+//bool CNaadDlg::GetNextLoop()
 //{
 //	while(m_Sequence[m_NextLoop].m_BolSeqCount == 0)
 //	{
@@ -899,7 +837,7 @@ void CNaadhDlg::TempoVariation()
 //	}
 //}
 
-void CNaadhDlg::PlayLoopSequence()
+void CNaadDlg::PlayLoopSequence()
 {
 	if(m_LoopDone)
 	{
@@ -921,18 +859,22 @@ void CNaadhDlg::PlayLoopSequence()
 	PlayBolSequence();
 }
 
-void CNaadhDlg::PlayBolSequence()
+void CNaadDlg::PlayBolSequence()
 {
 	if(m_Sequence[m_NextLoop].m_BolSeqCount == 0) return;
 
 	//play bol
 	UINT nbolseq = BOL_NONE;
+	UINT nbol2seq = BOL_NONE;
 
 	if(	m_BolVar > 0) nbolseq = m_Sequence[m_NextLoop].m_BolVarSeq[m_NextBol];
 	else nbolseq = m_Sequence[m_NextLoop].m_BolIdSeq[m_NextBol];
 
+	nbol2seq = m_Sequence[m_NextLoop].m_BolId2Seq[m_NextBol];
+
 	//play it
-	if(nbolseq != BOL_SILENCE) m_WaveBox.Play(nbolseq);
+	if (nbolseq != BOL_SILENCE) m_WaveBox.Play(nbolseq);
+	if ((nbol2seq != BOL_SILENCE) || (nbol2seq != BOL_NONE)) m_WaveBox.Play(nbol2seq);
 
 	//sam
 	if(m_SamBeat)
@@ -954,96 +896,14 @@ void CNaadhDlg::PlayBolSequence()
 	TempoVariation();
 }
 
-//void CNaadhDlg::PlaySequence()
-//{	
-//	//check seq
-//	if((m_Sequence[m_NextLoop].m_BolSeqCount == 0) && (m_Composition.m_LoopCount<=1)) return; //nothing to play
-//
-//	if((m_PlayLoop) && (m_ActiveLoop != LOOP_NONE))
-//	{
-//		if(m_Sequence[m_NextLoop].m_BolSeqCount == 0) 
-//		{
-//			//OnTimer(WM_USER+200);
-//			return;
-//		}
-//	}
-//	else
-//	{
-//		if(m_Sequence[m_NextLoop].m_BolSeqCount == 0) 
-//		{
-//			if(m_NextLoop < m_Composition.m_LoopCount-1) {m_NextLoop ++; SetLoopBpm();}
-//			else {m_NextLoop = 0; SetLoopBpm();}
-//
-//			//OnTimer(WM_USER+200);
-//			return;
-//		}
-//	}
-//
-//	//play bol
-//	UINT nbolseq = BOL_NONE;
-//
-//	if(	m_BolVar > 0) nbolseq = m_Sequence[m_NextLoop].m_BolVarSeq[m_NextBol];
-//	else nbolseq = m_Sequence[m_NextLoop].m_BolIdSeq[m_NextBol];
-//
-//	//play it
-//	if(nbolseq != BOL_SILENCE) m_WaveBox.Play(nbolseq);
-//
-//	//sam
-//	if(m_SamBeat)
-//	{
-//		if(m_Sequence[m_NextLoop].m_BolStatusSeq[m_NextBol] == BOL_SAM) m_WaveBox.Play(m_Ghungru[m_GhungruSel]);
-//	}
-//
-//	//set next
-//	if(m_NextBol < m_Sequence[m_NextLoop].m_BolSeqCount-1) m_NextBol ++;
-//	else 
-//	{
-//		m_NextBol = 0;
-//		if((m_PlayLoop) && (m_ActiveLoop != LOOP_NONE))
-//		{
-//			m_NextLoop = m_ActiveLoop;
-//		}
-//		else
-//		{
-//			if(m_NextLoop <= m_Composition.m_LoopCount-1) 
-//			{
-//				//check repeats
-//				if(m_Sequence[m_NextLoop].m_RepeatSeqCount > 1)
-//				{
-//					if(m_Sequence[m_NextLoop].m_RepeatCountDown < 2) 
-//					{
-//						m_Sequence[m_NextLoop].m_RepeatCountDown = m_Sequence[m_NextLoop].m_RepeatSeqCount;
-//						if(m_NextLoop < m_Composition.m_LoopCount-1) {m_NextLoop ++; SetLoopBpm();}
-//						else {m_NextLoop = 0; SetLoopBpm();}
-//					}
-//					else m_Sequence[m_NextLoop].m_RepeatCountDown --;
-//				}
-//				else
-//				{
-//					if(m_NextLoop < m_Composition.m_LoopCount-1) {m_NextLoop ++; SetLoopBpm();}
-//					else {m_NextLoop = 0; SetLoopBpm();}
-//				}
-//
-//			}
-//			else 
-//			{
-//				m_NextLoop = 0; 
-//				SetLoopBpm();
-//			}
-//		}
-//	}
-//
-//	TempoVariation();
-//}
-
-void CNaadhDlg::SetLoopBpm()
+void CNaadDlg::SetLoopBpm()
 {
 	m_Bpm = m_Composition.m_Loop[m_NextLoop].m_LoopBpm;
 	m_MaatraBol = m_Composition.m_Loop[m_NextLoop].m_MaatraBol;
 	UpdateTempo();
 }
 
-void CNaadhDlg::OnTimer(UINT nIDEvent)
+void CNaadDlg::OnTimer(UINT nIDEvent)
 {	
 	if(!m_IsPlaying) return;
 
@@ -1056,48 +916,17 @@ void CNaadhDlg::OnTimer(UINT nIDEvent)
 		PlayLoopSequence();
 	}
 
-
-	//else
-	//{
-	//	//variation in bols
-	//	//series1 0-11 series2 12-23 series3 24-35
-	//	int r = /*rand() % */m_BolVar;
-	//	UINT nbol = r + m_BolSeq[m_NextBol];
-	//	if(nbol>m_MaxBol) nbol = m_BolSeq[m_NextBol];
-	//	//TRACE2("%d, %d\r\n",r,s);
-
-	//	//play it
-	//	if(m_BolSeq[m_NextBol] != BOL_SILENCE) m_WaveBox.Play(nbol);
-
-	//	//sam
-	//	if(m_SamBeat)
-	//	{
-	//		if(m_StatusSeq[m_NextBol] == BOL_SAM) m_WaveBox.Play(121);
-	//	}
-
-	//	//set next
-	//	m_NextBol ++;
-	//	if(m_NextBol>=m_BolCount) m_NextBol = 0;
-
-	//	//variation in timer
-	//	KillTimer(m_Timer);
-	//	r = rand() % m_Rand;//1-100
-	//	r = (int)m_Tempo*(r - (int)m_Rand/2)/150;
-	//	//TRACE2("%d, %d\r\n",r,m_Rand);
-	//	m_Timer = SetTimer(WM_USER+200, m_Tempo + r, NULL);
-	//}
-
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CNaadhDlg::OnBnClickedButtonStop()
+void CNaadDlg::OnBnClickedButtonStop()
 {
 	KillTimer(m_Timer);
 	m_IsPlaying = FALSE;
 	this->SetDlgItemText(IDC_STATIC_MSG, " Stopped ...");
 }
 
-void CNaadhDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CNaadDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
 {
 	if (pScrollBar == (CScrollBar*)&m_TempoSliderCtrl)
 	{
@@ -1140,7 +969,7 @@ void CNaadhDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 }
 
 
-void CNaadhDlg::FormatCells()
+void CNaadDlg::FormatCells()
 {
 	bool mark = true;
 	UINT m = 1;
@@ -1157,7 +986,7 @@ void CNaadhDlg::FormatCells()
 	m_List.Invalidate();
 }
 
-void CNaadhDlg::LoadBolWaves()
+void CNaadDlg::LoadBolWaves()
 {
 	CString bolfile[MAXBOLS] = BOLS;
 	CString t, alarm;
@@ -1230,7 +1059,7 @@ void CNaadhDlg::LoadBolWaves()
 	m_IsBolLoaded = TRUE;
 }
 
-void CNaadhDlg::OnBnClickedCheckAcc()
+void CNaadDlg::OnBnClickedCheckAcc()
 {
 	if(this->IsDlgButtonChecked(IDC_CHECK_ACC))
 	{
@@ -1240,11 +1069,11 @@ void CNaadhDlg::OnBnClickedCheckAcc()
 	else KillTimer(m_TimerAcc);
 }
 
-void CNaadhDlg::OnBnClickedCheckRndbol()
+void CNaadDlg::OnBnClickedCheckRndbol()
 {
 }
 
-void CNaadhDlg::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu)
+void CNaadDlg::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu)
 {
 	CDialog::OnMenuSelect(nItemID, nFlags, hSysMenu);
 
@@ -1272,7 +1101,7 @@ void CNaadhDlg::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu)
 	}
 }
 
-void CNaadhDlg::OnOptionsPlayallsamples()
+void CNaadDlg::OnOptionsPlayallsamples()
 {
 	if(!m_IsBolLoaded)
 	{
@@ -1287,9 +1116,14 @@ void CNaadhDlg::OnOptionsPlayallsamples()
 	}
 }
 
-void CNaadhDlg::OnSelectBol(UINT nID)
+void CNaadDlg::OnSelectBol(UINT nID)
 {
 	UINT nbol = m_Composition.m_Loop[m_ActiveLoop].GetBol(m_List.m_selcol, m_List.m_selrow);
+
+	if (m_AddBol && (nbol == BOL_NONE))
+	{
+		OnEditAdd();
+	}
 
 	if(nbol == BOL_NONE) 
 	{
@@ -1297,12 +1131,19 @@ void CNaadhDlg::OnSelectBol(UINT nID)
 		nbol = m_Composition.m_Loop[m_ActiveLoop/*m_Composition.m_LoopCount-1*/].m_BolCount-1;
 	}
 
-	m_Composition.m_Loop[m_ActiveLoop].m_Bol[nbol].SetBolType(nID-ID_NA_NA01, m_List.m_selcol, m_List.m_selrow);
-
-	DisplayBol(m_ActiveLoop, nbol);
+	if (m_AddBol)
+	{
+		m_Composition.m_Loop[m_ActiveLoop].m_Bol[nbol].SetBolAdditional(nID - ID_NA_NA01, m_List.m_selcol, m_List.m_selrow);
+		DisplayBol(m_ActiveLoop, nbol);
+	}
+	else
+	{
+		m_Composition.m_Loop[m_ActiveLoop].m_Bol[nbol].SetBolType(nID - ID_NA_NA01, m_List.m_selcol, m_List.m_selrow);
+		DisplayBol(m_ActiveLoop, nbol);
+	}
 }
 
-void CNaadhDlg::OnBolsClear32792()
+void CNaadDlg::OnBolsClear32792()
 {
 	UINT nbol = m_Composition.m_Loop[m_ActiveLoop].GetBol(m_List.m_selcol, m_List.m_selrow);
 	if(nbol != BOL_NONE) 
@@ -1313,7 +1154,7 @@ void CNaadhDlg::OnBolsClear32792()
 	}
 }
 
-void CNaadhDlg::OnBolsSilence()
+void CNaadDlg::OnBolsSilence()
 {
 	UINT nbol = m_Composition.m_Loop[m_ActiveLoop].GetBol(m_List.m_selcol, m_List.m_selrow);
 
@@ -1328,7 +1169,7 @@ void CNaadhDlg::OnBolsSilence()
 	DisplayBol(m_ActiveLoop, nbol);
 }
 
-void CNaadhDlg::OnBolsSam()
+void CNaadDlg::OnBolsSam()
 {
 	UINT nbol = m_Composition.m_Loop[m_ActiveLoop].GetBol(m_List.m_selcol, m_List.m_selrow);
 	if(nbol != BOL_NONE) 
@@ -1338,7 +1179,7 @@ void CNaadhDlg::OnBolsSam()
 	}
 }
 
-void CNaadhDlg::OnBolsTali()
+void CNaadDlg::OnBolsTali()
 {
 	UINT nbol = m_Composition.m_Loop[m_ActiveLoop].GetBol(m_List.m_selcol, m_List.m_selrow);
 	if(nbol != BOL_NONE) 
@@ -1348,7 +1189,7 @@ void CNaadhDlg::OnBolsTali()
 	}
 }
 
-void CNaadhDlg::OnBolsKhali()
+void CNaadDlg::OnBolsKhali()
 {
 	UINT nbol = m_Composition.m_Loop[m_ActiveLoop].GetBol(m_List.m_selcol, m_List.m_selrow);
 	if(nbol != BOL_NONE) 
@@ -1358,7 +1199,7 @@ void CNaadhDlg::OnBolsKhali()
 	}
 }
 
-void CNaadhDlg::OnBnClickedCheckSam()
+void CNaadDlg::OnBnClickedCheckSam()
 {
 	m_SamBeat = this->IsDlgButtonChecked(IDC_CHECK_SAM);	
 }
@@ -1443,7 +1284,7 @@ BOOL GetFolder(CString* strSelectedFolder,
 	return FALSE;
 }
 
-void CNaadhDlg::OnOptionsBolfolder()
+void CNaadDlg::OnOptionsBolfolder()
 {
 	if(m_IsPlaying) OnBnClickedButtonStop();
 
@@ -1465,25 +1306,25 @@ void CNaadhDlg::OnOptionsBolfolder()
 	else m_BolFolder = oldpath;
 }
 
-void CNaadhDlg::OnHelpContact()
+void CNaadDlg::OnHelpContact()
 {
 	CString str;
 	str.Format("%.1f", (float)VERSION/10.0);
-	str = "mailto:oormicreations@gmail.com? subject=Naad & body=I wish to report following problem/bug/feature request:%0A%0ANaad version: " + str + "%0A%0ADated: " + VERMONTH + " Beta%0A%0ADescription: %0A%0A%0A%0A%0A%0AThanks.%0A%0A%0A%0AName:%0A%0ALocation:%0A%0A" ;
+	str = "mailto:oormicreations@gmail.com?subject=Naad&body= I wish to report following problem / bug / feature request : % 0A % 0ANaad version : " + str + " % 0A % 0ADated : " + VERMONTH + " % 0A % 0ADescription : % 0A % 0A % 0A % 0A % 0A % 0AThanks. % 0A % 0A % 0A % 0AName : % 0A % 0ALocation : % 0A % 0A" ;
 	ShellExecute(NULL, "open", str, NULL , NULL, SW_SHOWNORMAL);
 }
 
-void CNaadhDlg::OnHelpNaadhhelp()
+void CNaadDlg::OnHelpNaadhhelp()
 {
 	ShellExecute(0,"open",m_AppPath + "NaadHelp\\HelpIndex.htm",0,0,SW_SHOWNORMAL); 
 }
 
-void CNaadhDlg::SaveSettings()
+void CNaadDlg::SaveSettings()
 {
-	if(m_AppPath.IsEmpty()) return;
+	//if(m_AppPath.IsEmpty()) return;
 
 	CFile SettFile;
-	BOOL m_IsSettFileOpen = SettFile.Open( m_AppPath + "\\NaadSettings.set", CFile::modeCreate | CFile::modeWrite );
+	BOOL m_IsSettFileOpen = SettFile.Open(GetUserDocumentPath(NAAD_FOLDER) + "\\NaadSettings.set", CFile::modeCreate | CFile::modeWrite );
 	if(!m_IsSettFileOpen) {return;}
 
 	CArchive archive(&SettFile, CArchive::store);
@@ -1493,12 +1334,12 @@ void CNaadhDlg::SaveSettings()
 	SettFile.Close();
 }
 
-void CNaadhDlg::LoadSettings()
+void CNaadDlg::LoadSettings()
 {
-	if(m_AppPath.IsEmpty()) return;
+	//if(m_AppPath.IsEmpty()) return;
 
 	CFile SettFile;
-	BOOL m_IsSettFileOpen = SettFile.Open( m_AppPath + "\\NaadSettings.set", CFile::modeRead );
+	BOOL m_IsSettFileOpen = SettFile.Open(GetUserDocumentPath(NAAD_FOLDER) + "\\NaadSettings.set", CFile::modeRead );
 	if(!m_IsSettFileOpen) {return;}
 	CArchive archive(&SettFile, CArchive::load);
 
@@ -1518,7 +1359,7 @@ void CNaadhDlg::LoadSettings()
 }
 
 
-void CNaadhDlg::AssociateFileType(CString ext, CString app, CString id, CString desc, CString icon)
+void CNaadDlg::AssociateFileType(CString ext, CString app, CString id, CString desc, CString icon)
 {
 	//CreateRegistryKey   HKEY_CLASSES_ROOT\Extension
 	DWORD dwDisposition;
@@ -1575,7 +1416,7 @@ void CNaadhDlg::AssociateFileType(CString ext, CString app, CString id, CString 
 
 }
 
-void CNaadhDlg::OnFileNewcomposition()
+void CNaadDlg::OnFileNewcomposition()
 {
 	if(!m_Saved)
 	{
@@ -1584,7 +1425,7 @@ void CNaadhDlg::OnFileNewcomposition()
 		if( ex == IDYES)	OnFileSave32774();
 	}
 	if(m_IsPlaying) OnBnClickedButtonStop();
-	m_NaadhFileName = "";
+	m_NaadFileName = "";
 
 	//clean up previous composition
 	UINT lastcount = m_Composition.m_LoopCount;
@@ -1603,23 +1444,33 @@ void CNaadhDlg::OnFileNewcomposition()
 	m_Saved = true;
 }
 
-void CNaadhDlg::DisplayBol(UINT nloop, UINT nbol)
+void CNaadDlg::DisplayBol(UINT nloop, UINT nbol)
 {
 	COLORREF color;
 	if(m_Composition.m_Loop[nloop].m_Bol[nbol].m_Species < 5) color = TXTRED;
 	else color = TXTBLUE;
+	CString celltext;
+
+	celltext = m_Composition.m_Loop[nloop].m_Bol[nbol].m_BolName;
+
+	if (m_Composition.m_Loop[nloop].m_Bol[nbol].m_BolId2 != BOL_NONE)
+	{
+		celltext += "+" + m_Composition.m_Loop[nloop].m_Bol[nbol].m_BolName2;
+		color = TXTBLACK;
+	}
+
+	celltext += " " + m_Composition.m_Loop[nloop].m_Bol[nbol].m_BolStatusName;
 
 	m_List.SetCellText(
 		m_Composition.m_Loop[nloop].m_Bol[nbol].m_Col,
 		m_Composition.m_Loop[nloop].m_Bol[nbol].m_Row,
-		m_Composition.m_Loop[nloop].m_Bol[nbol].m_BolName + " " +
-		m_Composition.m_Loop[nloop].m_Bol[nbol].m_BolStatusName, 1, color);
+		celltext, 1, color);
 	
 	m_List.SetColHeading(3, m_Composition.m_Loop[nloop].GetMatraCount());
 	m_Saved = false;
 }
 
-void CNaadhDlg::DisplayLoop(UINT nloop)
+void CNaadDlg::DisplayLoop(UINT nloop)
 {
 	if(nloop == LOOP_NONE) return;
 
@@ -1636,7 +1487,7 @@ void CNaadhDlg::DisplayLoop(UINT nloop)
 	FormatCells();
 }
 
-void CNaadhDlg::OnLoopOpen()
+void CNaadDlg::OnLoopOpen()
 {
 	UINT nloop = m_Composition.GetLoop(m_List.m_selcol, m_List.m_selrow);
 	if(nloop == LOOP_NONE)
@@ -1647,19 +1498,21 @@ void CNaadhDlg::OnLoopOpen()
 		//m_Composition.m_Loop[nloop].m_Row = m_List.m_selrow;
 	}
 	m_IsCompView = FALSE;
+	m_Menu.EnableMenuItem(ID_EDIT_ADD, MF_BYCOMMAND | MF_ENABLED);
+
 	m_ActiveLoop = nloop;
 	ClearDisplay();
 	DisplayLoop(nloop);
 }
 
-void CNaadhDlg::OnViewComposition()
+void CNaadDlg::OnViewComposition()
 {
 	m_Composition.DoCompositionPropDlg();
 	m_Saved = FALSE;
 	DisplayComposition();
 }
 
-void CNaadhDlg::DisplayComposition()
+void CNaadDlg::DisplayComposition()
 {
 	ClearDisplay();
 
@@ -1676,12 +1529,19 @@ void CNaadhDlg::DisplayComposition()
 	m_List.SetColHeading(2," ");
 	m_List.SetColHeading(3," ");
 	m_IsCompView = TRUE;
+
+	if (m_AddBol)
+	{
+		OnEditAdd();
+		m_Menu.EnableMenuItem(ID_EDIT_ADD, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+	}
+
 	m_ActiveLoop = LOOP_NONE;
 	FormatCells();
 
 }
 
-void CNaadhDlg::OnLoopClear()
+void CNaadDlg::OnLoopClear()
 {
 	UINT nloop = 0;
 	nloop = m_Composition.GetLoop(m_List.m_selcol, m_List.m_selrow);
@@ -1690,12 +1550,12 @@ void CNaadhDlg::OnLoopClear()
 	DisplayComposition();
 }
 
-void CNaadhDlg::OnBolsViewcomp()
+void CNaadDlg::OnBolsViewcomp()
 {
 	DisplayComposition();
 }
 
-void CNaadhDlg::OnLoopProperties()
+void CNaadDlg::OnLoopProperties()
 {
 	UINT nloop = 0;
 	nloop = m_Composition.GetLoop(m_List.m_selcol, m_List.m_selrow);
@@ -1706,7 +1566,7 @@ void CNaadhDlg::OnLoopProperties()
 	DisplayComposition();
 }
 
-void CNaadhDlg::OnViewLoop()
+void CNaadDlg::OnViewLoop()
 {
 	if(m_ActiveLoop == LOOP_NONE) 
 	{
@@ -1719,7 +1579,7 @@ void CNaadhDlg::OnViewLoop()
 	DisplayLoop(m_ActiveLoop);
 }
 
-void CNaadhDlg::OnBnClickedCheckEcho()
+void CNaadDlg::OnBnClickedCheckEcho()
 {
 	//if(this->IsDlgButtonChecked(IDC_CHECK_ECHO))
 	//{
@@ -1729,73 +1589,73 @@ void CNaadhDlg::OnBnClickedCheckEcho()
 }
 
 
-void CNaadhDlg::OnBnClickedOk()
+void CNaadDlg::OnBnClickedOk()
 {
 	OnFileExit();
 }
 
 
-void CNaadhDlg::OnGhungruGhungru01()
+void CNaadDlg::OnGhungruGhungru01()
 {
 	m_GhungruSel = 0;
 }
 
 
-void CNaadhDlg::OnGhungruGhungru02()
+void CNaadDlg::OnGhungruGhungru02()
 {
 	m_GhungruSel = 1;
 }
 
 
-void CNaadhDlg::OnGhungruGhungru03()
+void CNaadDlg::OnGhungruGhungru03()
 {
 	m_GhungruSel = 2;
 }
 
 
-void CNaadhDlg::OnGhungruGhungru04()
+void CNaadDlg::OnGhungruGhungru04()
 {
 	m_GhungruSel = 3;
 }
 
 
-void CNaadhDlg::OnGhungruGhungru05()
+void CNaadDlg::OnGhungruGhungru05()
 {
 	m_GhungruSel = 4;
 }
 
 
-void CNaadhDlg::OnGhungruGhungru06()
+void CNaadDlg::OnGhungruGhungru06()
 {
 	//m_GhungruSel = 5;
 }
 
 
-void CNaadhDlg::OnAccompanimentTanpura()
+void CNaadDlg::OnAccompanimentTanpura()
 {
 	m_TanpuraSel = 0;
 }
 
 
-void CNaadhDlg::OnAccompaniment2()
+void CNaadDlg::OnAccompaniment2()
 {
 	//m_TanpuraSel = 1;
 }
 
 
-void CNaadhDlg::OnAccompaniment3()
+void CNaadDlg::OnAccompaniment3()
 {
 	//m_TanpuraSel = 2;
 }
 
 
-void CNaadhDlg::OnAccompaniment4()
+void CNaadDlg::OnAccompaniment4()
 {
 	//m_TanpuraSel = 3;
 }
 
 
-void CNaadhDlg::OnBnClickedCheckVarsame()
+void CNaadDlg::OnBnClickedCheckVarsame()
 {
 	m_VarietySameSpecies = this->IsDlgButtonChecked(IDC_CHECK_VARSAME);
 	m_VarietyAnySpecies = !m_VarietySameSpecies;
@@ -1805,7 +1665,7 @@ void CNaadhDlg::OnBnClickedCheckVarsame()
 }
 
 
-void CNaadhDlg::OnBnClickedCheckVarany()
+void CNaadDlg::OnBnClickedCheckVarany()
 {
 	m_VarietyAnySpecies = this->IsDlgButtonChecked(IDC_CHECK_VARANY);
 	m_VarietySameSpecies = !m_VarietyAnySpecies;
@@ -1814,7 +1674,7 @@ void CNaadhDlg::OnBnClickedCheckVarany()
 	ResetVarient(); 
 }
 
-UINT CNaadhDlg::GetBolVarient(UINT nbol)
+UINT CNaadDlg::GetBolVarient(UINT nbol)
 {
 	if((nbol == BOL_SILENCE)||(nbol == BOL_NONE)) return nbol;
 
@@ -1837,7 +1697,7 @@ UINT CNaadhDlg::GetBolVarient(UINT nbol)
 	return vbol;
 }
 
-void CNaadhDlg::OnBnClickedButtonSavevar()
+void CNaadDlg::OnBnClickedButtonSavevar()
 {
 	int res = AfxMessageBox("Do you wish to save the original before replacing it with this variation ?", MB_YESNOCANCEL);
 	if(res == IDCANCEL) return;
@@ -1862,7 +1722,7 @@ void CNaadhDlg::OnBnClickedButtonSavevar()
 }
 
 
-void CNaadhDlg::OnBnClickedCheckVarcomp()
+void CNaadDlg::OnBnClickedCheckVarcomp()
 {
 	m_VarietyComp = this->IsDlgButtonChecked(IDC_CHECK_VARCOMP);
 	m_VarietyLoop = !m_VarietyComp;
@@ -1872,7 +1732,7 @@ void CNaadhDlg::OnBnClickedCheckVarcomp()
 }
 
 
-void CNaadhDlg::OnBnClickedCheckVarloop()
+void CNaadDlg::OnBnClickedCheckVarloop()
 {
 	m_VarietyLoop = this->IsDlgButtonChecked(IDC_CHECK_VARLOOP);
 	m_VarietyComp = !m_VarietyLoop;
@@ -1881,7 +1741,7 @@ void CNaadhDlg::OnBnClickedCheckVarloop()
 	ResetVarient(); 
 }
 
-void CNaadhDlg::ResetVarient()
+void CNaadDlg::ResetVarient()
 {
 	m_BolVar = 0;
 	m_List.SetColHeading(2," ");
@@ -1889,7 +1749,7 @@ void CNaadhDlg::ResetVarient()
 	this->SetDlgItemText(IDC_EDIT_BOLVAR, "");
 }
 
-void CNaadhDlg::CreateVarient()
+void CNaadDlg::CreateVarient()
 {	
 	if(!m_IsPlaying) return;
 
@@ -1924,7 +1784,7 @@ void CNaadhDlg::CreateVarient()
 
 }
 
-void CNaadhDlg::OnBnClickedButtonAutocompose()
+void CNaadDlg::OnBnClickedButtonAutocompose()
 {
 	//init
 	OnFileNewcomposition();
@@ -1936,7 +1796,7 @@ void CNaadhDlg::OnBnClickedButtonAutocompose()
 	DisplayComposition();
 }
 
-void CNaadhDlg::UpdateTempo()
+void CNaadDlg::UpdateTempo()
 {
 	int bpm = m_Bpm + m_BpmDeviation + m_BpmRand;
 	if(bpm<0) bpm = 1;
@@ -1949,7 +1809,7 @@ void CNaadhDlg::UpdateTempo()
 	this->SetDlgItemText(IDC_EDIT_TEMPO, m_Mesg);
 }
 
-void CNaadhDlg::OnBnClickedButtonPlayloop()
+void CNaadDlg::OnBnClickedButtonPlayloop()
 {
 	if(m_ActiveLoop == LOOP_NONE) return;
 	m_PlayLoop = TRUE;
@@ -1957,7 +1817,7 @@ void CNaadhDlg::OnBnClickedButtonPlayloop()
 	InitPlay();
 }
 
-void CNaadhDlg::InitPlay()
+void CNaadDlg::InitPlay()
 {
 	if(m_IsPlaying) OnBnClickedButtonStop();
 	if(m_Composition.m_LoopCount<1) return;
@@ -1994,7 +1854,7 @@ void CNaadhDlg::InitPlay()
 }
 
 
-void CNaadhDlg::OnBnClickedButtonGun1()
+void CNaadDlg::OnBnClickedButtonGun1()
 {
 	m_Gun++;
 	if(m_Gun >  4) m_Gun = -3;
@@ -2019,7 +1879,7 @@ void CNaadhDlg::OnBnClickedButtonGun1()
 }
 
 
-void CNaadhDlg::OpenLoopOldVer(CString loopfilename)
+void CNaadDlg::OpenLoopOldVer(CString loopfilename)
 {
 	CFile naadhfile;
 	if(!naadhfile.Open(loopfilename, CFile::modeRead))
@@ -2168,7 +2028,7 @@ void CNaadhDlg::OpenLoopOldVer(CString loopfilename)
 	this->SetDlgItemText(IDC_STATIC_MSG, "  Ready...");
 }
 
-void CNaadhDlg::OnLoopLoadloop()
+void CNaadDlg::OnLoopLoadloop()
 {
 	UINT nloop = m_Composition.GetLoop(m_List.m_selcol,m_List.m_selrow);
 	if(nloop != LOOP_NONE)
@@ -2256,7 +2116,7 @@ void CNaadhDlg::OnLoopLoadloop()
 }
 
 
-void CNaadhDlg::OnLoopSaveloop()
+void CNaadDlg::OnLoopSaveloop()
 {
 	UINT nloop = m_Composition.GetLoop(m_List.m_selcol,m_List.m_selrow);
 	if(nloop == LOOP_NONE) return;
@@ -2311,7 +2171,7 @@ void CNaadhDlg::OnLoopSaveloop()
 }
 
 
-void CNaadhDlg::OnEditSelect()
+void CNaadDlg::OnEditSelect()
 {
 	m_EditMode = !m_EditMode;
 	m_Menu.CheckMenuItem(ID_EDIT_SELECT, (MF_CHECKED * (UINT)m_EditMode) |MF_BYCOMMAND);
@@ -2333,7 +2193,7 @@ void CNaadhDlg::OnEditSelect()
 }
 
 
-void CNaadhDlg::OnEditClear32974()
+void CNaadDlg::OnEditClear32974()
 {
 	if(m_ActiveLoop != LOOP_NONE)
 	{
@@ -2368,7 +2228,7 @@ void CNaadhDlg::OnEditClear32974()
 }
 
 
-void CNaadhDlg::OnEditCopy32956()
+void CNaadDlg::OnEditCopy32956()
 {
 	m_CompositionCopy.Clear();
 
@@ -2407,7 +2267,7 @@ void CNaadhDlg::OnEditCopy32956()
 	m_List.m_sel = FALSE;
 }
 
-void CNaadhDlg::NormalizeLocations()
+void CNaadDlg::NormalizeLocations()
 {
 	UINT mincol = MC, minrow = MR;
 	if(m_ActiveLoop != LOOP_NONE)
@@ -2440,18 +2300,14 @@ void CNaadhDlg::NormalizeLocations()
 
 }
 
-void CNaadhDlg::OnEditCut32957()
+void CNaadDlg::OnEditCut32957()
 {
 	OnEditCopy32956();
 	OnEditClear32974();
 }
 
-void CNaadhDlg::OnEditPaste32958()
+void CNaadDlg::OnEditPaste32958()
 {
-	//this->SetDlgItemTextA(IDC_STATIC_FILE, "  Please select an empty cell to paste into.\r\nEnsure that there are enough empty cells around it");
-	//ClearSelection();
-	//m_Paste = TRUE;
-	//m_List.GetCellSelection();
 	if(!m_List.m_sel)
 	{
 		AfxMessageBox("Please select an empty cell to paste into and click [Edit->Paste] on menu.", MB_OK, MB_ICONINFORMATION);
@@ -2463,7 +2319,7 @@ void CNaadhDlg::OnEditPaste32958()
 	m_Saved = FALSE;
 }
 
-void CNaadhDlg::Paste(UINT col, UINT row)
+void CNaadDlg::Paste(UINT col, UINT row)
 {
 	bool overwritten = false;
 
@@ -2532,4 +2388,84 @@ void CNaadhDlg::Paste(UINT col, UINT row)
 		this->SetDlgItemTextA(IDC_STATIC_FILE, "  Ready...");
 	}
 
+}
+
+
+void CNaadDlg::OnEditAdd()
+{
+	if (m_IsCompView) m_AddBol = FALSE;
+	else m_AddBol = !m_AddBol;
+
+	m_Menu.CheckMenuItem(ID_EDIT_ADD, (MF_CHECKED * (UINT)m_AddBol) | MF_BYCOMMAND);
+
+	if (m_AddBol)
+	{
+		this->SetDlgItemTextA(IDC_STATIC_MSG, "  Add Bol Mode");
+		m_List.SetColHeading(7, "Add Mode");
+		this->SetDlgItemTextA(IDC_STATIC_FILE, "  Click on cells to add a bol to existing one. Click [Edit->Add] again to cancel Add Bol mode");
+	}
+	else
+	{
+		this->SetDlgItemTextA(IDC_STATIC_MSG, "  Compose Mode");
+		m_List.SetColHeading(7, "Compose Mode");
+		this->SetDlgItemTextA(IDC_STATIC_FILE, "  Ready ...");
+	}
+
+}
+
+CString CNaadDlg::GetUserDocumentPath(UINT type)
+{
+	CHAR my_documents[MAX_PATH];
+	HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
+
+	if (result != S_OK)
+	{
+		return "";
+	}
+	else
+	{
+		CString str;
+		str.SetString(my_documents);
+		if (type == NAAD_FOLDER_COMP)
+		{
+			str = str + "\\Oormi Creations\\Naad\\Compositions";
+		}
+
+		if (type == NAAD_FOLDER)
+		{
+			str = str + "\\Oormi Creations\\Naad";
+		}
+
+		if (GetFileAttributes(str) == INVALID_FILE_ATTRIBUTES)
+		{
+			//path doesn't exist
+			if (SHCreateDirectoryEx(NULL, str, NULL) == ERROR_SUCCESS)
+			{
+				return str;
+			}
+			else
+			{
+				return "";
+			}
+		}
+
+		//path is valid
+		return str;
+	}
+	
+}
+
+UINT UsageProc(LPVOID param)
+{
+	CUpdateCheck *checkUpdate = (CUpdateCheck *)param;
+	checkUpdate->SendUsageData();
+	delete checkUpdate;
+	return 0;
+}
+
+void CNaadDlg::ReportUsage()
+{
+	CUpdateCheck *checkUpdate1 = new CUpdateCheck;
+	checkUpdate1->m_Quiet = m_Quiet;
+	CWinThread* hTh1 = AfxBeginThread(UsageProc, checkUpdate1, THREAD_PRIORITY_NORMAL);
 }

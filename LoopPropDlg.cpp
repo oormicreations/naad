@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "Naadh.h"
+#include "Naad.h"
 #include "LoopPropDlg.h"
 
 

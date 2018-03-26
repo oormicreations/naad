@@ -39,6 +39,7 @@
 #define TXTRED		RGB(220,0,0)
 #define TXTGREEN	RGB(0,160,0)
 #define TXTBLUE		RGB(0,0,220)
+#define TXTBLACK	RGB(0,0,0)
 
 
 /**
@@ -153,7 +154,7 @@ public:
     */
    void EnsureRowIsVisible(int row);
 
-      //cafvt custom funcs
+      //naad custom funcs
 	void SetCellMark(int col, int row, BOOL mark);
 	void SetCellBg(int col, int row, BOOL mark);
 	void SetCellDisable(int col, int row, BOOL dis);

@@ -320,6 +320,7 @@ void CMultilineList::SetCellMark(int col, int row, BOOL mark)
    UpdateChildControls();
 }
 
+
 void CMultilineList::SetCellBg(int col, int row, BOOL mark)
 {
    ASSERT(col >= 0);
@@ -1429,7 +1430,7 @@ void CMultilineList::RenderContent(CDC & dc, CRect & r)
 		 m_cells[coord] = cell;
 
 
-		 //mark cell as selected - cafvt custom
+		 //mark cell as selected 
 		 //if(m_IsMarkable)
 		 //{
 			//if(m_markXPos>textRect.left  && m_markXPos<textRect.right)
@@ -1467,7 +1468,7 @@ void CMultilineList::RenderContent(CDC & dc, CRect & r)
 				markrect.DeflateRect(2,2);
 				dc.FillRect(markrect,&markbrush);
 			}
-		 //}
+			//}
 
 			// render the cell text
          dc.DrawTextEx(cell.m_text,textRect,
@@ -1503,7 +1504,7 @@ void CMultilineList::RenderContent(CDC & dc, CRect & r)
 
          int x2 = x1 + column.m_width;
 
-         dc.MoveTo(x2-2,y1+GRID_WIDTH); //cafvt customization
+         dc.MoveTo(x2-2,y1+GRID_WIDTH); //naad customization
          dc.LineTo(x2-2,y2+GRID_WIDTH+50);
          //dc.MoveTo(x2,y1+GRID_WIDTH);
          //dc.LineTo(x2,y2+GRID_WIDTH);
