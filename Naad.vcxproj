@@ -210,6 +210,60 @@
     <ClInclude Include="zoomctrl.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Compositions\Bhajan01.nad" />
+    <None Include="Compositions\Garba02.nad" />
+    <None Include="Compositions\Naad v0.2 files\ChowTaal01.nad" />
+    <None Include="Compositions\Naad v0.2 files\Dadra01.nad" />
+    <None Include="Compositions\Naad v0.2 files\Dadra02.nad" />
+    <None Include="Compositions\Naad v0.2 files\EkTaal01.nad" />
+    <None Include="Compositions\Naad v0.2 files\Garba01.nad" />
+    <None Include="Compositions\Naad v0.2 files\JhapTal01.nad" />
+    <None Include="Compositions\Naad v0.2 files\JhapTal02.nad" />
+    <None Include="Compositions\Naad v0.2 files\Kahreva01.nad" />
+    <None Include="Compositions\Naad v0.2 files\Kahreva02.nad" />
+    <None Include="Compositions\Naad v0.2 files\Kahreva03.nad" />
+    <None Include="Compositions\Naad v0.2 files\Kahreva04.nad" />
+    <None Include="Compositions\Naad v0.2 files\Khempta.nad" />
+    <None Include="Compositions\Naad v0.2 files\Pashtu.nad" />
+    <None Include="Compositions\Naad v0.2 files\Rupak01.nad" />
+    <None Include="Compositions\Naad v0.2 files\ShulTaal01.nad" />
+    <None Include="Compositions\Naad v0.2 files\TeenTaal01.nad" />
+    <None Include="Compositions\Naad v0.2 files\TeenTaal02.nad" />
+    <None Include="Compositions\Naad v0.2 files\Tilwada.nad" />
+    <None Include="Compositions\Naad v0.2 files\TivraTaal01.nad" />
+    <None Include="Compositions\Naad v0.2 files\UthanTeenTaal01.nad" />
+    <None Include="Compositions\TereBina01.nad" />
+    <None Include="Loops\KeharvaUthan01.nlp" />
+    <None Include="Loops\Peshkar.nlp" />
+    <None Include="NaadHelp\HelpIndex.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="NaadHelp\Left.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="NaadHelp\NaadHelp01.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="NaadHelp\NaadHelp02.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="NaadHelp\NaadHelp03.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="NaadHelp\NaadHelp04.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="NaadHelp\NaadHelp05.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="NaadHelp\NaadHelp1.css" />
+    <None Include="NaadHelp\NaadHelp2.css" />
+    <None Include="NaadHelp\ReleaseNotes.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="NaadHelp\Top.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="res\icon1.ico" />
     <None Include="res\idr_main.ico" />
     <None Include="res\Naad.ico" />

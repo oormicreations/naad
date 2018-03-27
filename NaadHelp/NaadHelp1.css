@@ -1,0 +1,10 @@
+BODY
+{
+	font-size: 12pt;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	list-style-type: disc;
+	background-color: #D2E0E6;
+}
+li{
+  margin: 10px 0;
+}
