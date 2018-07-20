@@ -131,6 +131,7 @@ BEGIN
     EDITTEXT        IDC_EDIT_BOLVAR,426,189,165,8,ES_CENTER | ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER
     PUSHBUTTON      "Play Loop >",IDC_BUTTON_PLAYLOOP,269,264,71,16
     PUSHBUTTON      "Restore the original",IDC_BUTTON_RESVAR,493,271,71,16,NOT WS_VISIBLE
+    PUSHBUTTON      "Render to File",IDC_BUTTON_RENDER,104,151,71,16
 END
 
 IDD_DIALOG_ABT DIALOGEX 0, 0, 394, 192
@@ -191,8 +192,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,1,0,0
- PRODUCTVERSION 1,1,0,0
+ FILEVERSION 1,2,0,0
+ PRODUCTVERSION 1,2,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -209,12 +210,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Oormi Creations"
             VALUE "FileDescription", "Naad Tabla Composer"
-            VALUE "FileVersion", "1.1.0.0"
+            VALUE "FileVersion", "1.2.0.0"
             VALUE "InternalName", "Naad.exe"
             VALUE "LegalCopyright", "(c) Oormi Creations.  All rights reserved."
             VALUE "OriginalFilename", "Naad.exe"
             VALUE "ProductName", "Naad"
-            VALUE "ProductVersion", "1.1.0.0"
+            VALUE "ProductVersion", "1.2.0.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -630,7 +631,7 @@ BEGIN
     IDS_UPDATE_AVAILABLE    "You are currently using version %u.%u\r\nThe newest version %u.%u is available online for free.\r\nDo you wish to download it now ?"
     IDS_UPDATE_NO           "No Updates are available.\r\nThis is the latest version."
     IDS_UPDATE_NOCHECK      "Unable to check for updates."
-    IDS_UPDATE              "http://oormi.in/software/updatenaad.txt"
+    IDS_UPDATE              "https://oormi.in/software/updatenaad.txt"
 END
 
 #endif    // English (United States) resources

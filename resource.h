@@ -64,6 +64,8 @@
 #define IDC_EDIT_BOLVAR                 1026
 #define IDC_BUTTON_PLAYLOOP             1027
 #define IDC_BUTTON_RESVAR               1028
+#define IDC_BUTTON3                     1029
+#define IDC_BUTTON_RENDER               1029
 #define ID_HELP_NAADHHELP               32771
 #define ID_HELP_ABOUTNAADH              32772
 #define ID_FILE_OPEN32773               32773
@@ -267,9 +269,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        141
+#define _APS_NEXT_RESOURCE_VALUE        142
 #define _APS_NEXT_COMMAND_VALUE         32979
-#define _APS_NEXT_CONTROL_VALUE         1026
+#define _APS_NEXT_CONTROL_VALUE         1030
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

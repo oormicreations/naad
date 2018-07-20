@@ -9,6 +9,7 @@
 #include "wavebox.h"
 #include "composition.h"
 #include "Sequence.h"
+#include "WaveRender.h"
 
 #define NAAD_FOLDER		 1
 #define NAAD_FOLDER_COMP 2
@@ -43,6 +44,8 @@ public:
     CWaveBox		m_WaveBox;
 	CComposition	m_Composition, m_CompositionCopy;
 	CSequence*		m_Sequence;
+
+	CWaveRender		m_Render;
 
 //------------------------------------------------------------------------------------------------------------
 
@@ -157,5 +160,6 @@ public:
 	afx_msg void OnEditCut32957();
 	afx_msg void OnEditPaste32958();
 	afx_msg void OnEditAdd();
+	afx_msg void OnBnClickedButtonRender();
 };
 

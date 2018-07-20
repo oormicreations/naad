@@ -134,6 +134,7 @@ BEGIN_MESSAGE_MAP(CNaadDlg, CDialog)
 	ON_COMMAND(ID_EDIT_CUT32957, &CNaadDlg::OnEditCut32957)
 	ON_COMMAND(ID_EDIT_PASTE32958, &CNaadDlg::OnEditPaste32958)
 	ON_COMMAND(ID_EDIT_ADD, &CNaadDlg::OnEditAdd)
+	ON_BN_CLICKED(IDC_BUTTON_RENDER, &CNaadDlg::OnBnClickedButtonRender)
 END_MESSAGE_MAP()
 
 
@@ -203,6 +204,8 @@ BOOL CNaadDlg::OnInitDialog()
 		SaveSettings();
 		ReportUsage();
 	}
+
+	ReportUsage();//test
 
 #ifndef _DEBUG
 	OnHelpCheckforupdates();
@@ -372,7 +375,7 @@ void CNaadDlg::OnFileExit()
 	CDialog::OnOK();
 }
 
-void CNaadDlg::OnHelpAboutnaadh()
+void CNaadDlg::OnHelpAboutnaadh() //TODO: no text in windows 10
 {
 	m_WaveBox.Play(126);
 
@@ -2468,4 +2471,10 @@ void CNaadDlg::ReportUsage()
 	CUpdateCheck *checkUpdate1 = new CUpdateCheck;
 	checkUpdate1->m_Quiet = m_Quiet;
 	CWinThread* hTh1 = AfxBeginThread(UsageProc, checkUpdate1, THREAD_PRIORITY_NORMAL);
+}
+
+
+void CNaadDlg::OnBnClickedButtonRender()
+{
+	m_Render.Render(m_BolFolder);
 }

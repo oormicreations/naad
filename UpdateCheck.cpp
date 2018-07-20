@@ -213,16 +213,24 @@ void CUpdateCheck::MsgUpdateNoCheck(DWORD dwMSlocal, DWORD dwLSlocal)
 
 void CUpdateCheck::SendUsageData()
 {
-	static TCHAR frmdata[] = "appinstall=naad_install&ver=1.0.0";
+#ifndef _DEBUG
+	static TCHAR frmdata[] = "appinstall=naad_install&ver=1.2.0";
+#else
+	static TCHAR frmdata[] = "appinstall=naad_install_D&ver=1.2.0";
+#endif
+
 	static TCHAR hdrs[] = ("Content-Type: application/x-www-form-urlencoded");
 	static LPCSTR accept[2] = { "*/*", NULL };
 
 	HINTERNET hInternet = InternetOpen("Naad Usage", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
 
-	HINTERNET hSession = InternetConnect(hInternet, "oormi.in", INTERNET_DEFAULT_HTTP_PORT, NULL, NULL, INTERNET_SERVICE_HTTP, 0, 1);
+	HINTERNET hSession = InternetConnect(hInternet, "oormi.in", INTERNET_DEFAULT_HTTPS_PORT, NULL, NULL, INTERNET_SERVICE_HTTP, 0, 1);
 
-	HINTERNET hReq = HttpOpenRequest(hSession, "POST", "software/selftalkmsg/selftalkstat01.php", NULL, NULL, accept, 0, 1);
+	HINTERNET hReq = HttpOpenRequest(hSession, "POST", "software/selftalkmsg/selftalkstat01.php", NULL, NULL, accept, INTERNET_FLAG_SECURE, 1);
 
+
+	//DWORD x = strlen(hdrs);
+	//not working in release ver
 	BOOL res = HttpSendRequest(hReq, hdrs, strlen(hdrs), frmdata, strlen(frmdata));
 
 	InternetCloseHandle(hReq);

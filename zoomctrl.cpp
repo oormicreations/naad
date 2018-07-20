@@ -120,7 +120,7 @@ void CZoomCtrl::Draw(CDC *pDC)
 
 	if(m_Error>0)
 	{
-		FontFamily  fontFamily(L"Century Gothic");
+		FontFamily  fontFamily(L"Arial");
 		Font        font(&fontFamily, 12, FontStyleRegular, UnitPixel);
 		PointF      pointF(120.0f, 230.0f);
 		SolidBrush  solidBrush(Color(255, 220, 0, 0));
@@ -129,6 +129,7 @@ void CZoomCtrl::Draw(CDC *pDC)
 		if(m_Error==1) errstr = L"Error : Image file was not found";
 		if(m_Error==2) errstr = L"Error : Image file could not be loaded";
 		if(m_Error==3) errstr = L"Error : Image file stream creation failed";
+
 		graphics.DrawString(errstr, -1, &font, pointF, &solidBrush);
 		pointF.X = 80.f;
 		pointF.Y = 280.f;
@@ -149,8 +150,6 @@ void CZoomCtrl::Draw(CDC *pDC)
 
 	if(m_About)
 	{
-		FontFamily  fontFamily(L"Century Gothic");
-		Font        font(&fontFamily, 11, FontStyleRegular, UnitPixel);
 		PointF      pointF(10.0f, 10.0f);
 		SolidBrush  solidBrush(Color(255, 255, 230, 55));
 
@@ -158,8 +157,21 @@ void CZoomCtrl::Draw(CDC *pDC)
 		int nLen = MultiByteToWideChar(CP_ACP, 0,lpStr, -1, NULL, NULL);
 		LPWSTR lpszW = new WCHAR[nLen];
 		MultiByteToWideChar(CP_ACP, 0, lpStr, -1, lpszW, nLen);
-		
-		graphics.DrawString(lpszW, -1, &font, pointF, &solidBrush);
+
+		FontFamily  fontFamily(L"Century Gothic");
+
+		if (fontFamily.IsAvailable())
+		{
+			Font        font(&fontFamily, 11, FontStyleRegular, UnitPixel);
+			graphics.DrawString(lpszW, -1, &font, pointF, &solidBrush);
+		}
+		else
+		{
+			FontFamily  fontFamily(L"Arial");
+			Font        font(&fontFamily, 11, FontStyleRegular, UnitPixel);
+			graphics.DrawString(lpszW, -1, &font, pointF, &solidBrush);
+		}
+
 		delete [] lpszW;
 	}
 	

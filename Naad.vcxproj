@@ -188,7 +188,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="UpdateCheck.cpp" />
+    <ClCompile Include="Wave.cpp" />
     <ClCompile Include="WaveBox.cpp" />
+    <ClCompile Include="WaveRender.cpp" />
     <ClCompile Include="zoomctrl.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -206,7 +208,9 @@
     <ClInclude Include="Sequence.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="UpdateCheck.h" />
+    <ClInclude Include="Wave.h" />
     <ClInclude Include="WaveBox.h" />
+    <ClInclude Include="WaveRender.h" />
     <ClInclude Include="zoomctrl.h" />
   </ItemGroup>
   <ItemGroup>
